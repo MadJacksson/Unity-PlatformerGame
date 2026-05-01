@@ -2,8 +2,10 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Spike
+  - HealingOrb
   layers:
   - Default
   - TransparentFX
@@ -13,10 +15,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Wall
+  - Platform
+  - One-Way Platform
   - 
   - 
   - 
@@ -38,6 +40,23 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3103741759
+    locked: 0
+  - name: Water
+    uniqueID: 3302081373
+    locked: 0
+  - name: Ground
+    uniqueID: 2381041241
+    locked: 0
+  - name: Wall
+    uniqueID: 1938154643
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Foreground
+    uniqueID: 4210164827
+    locked: 0
+  m_RenderingLayers:
+  - Default

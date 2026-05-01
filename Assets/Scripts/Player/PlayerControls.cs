@@ -22,8 +22,8 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Movement")]
     public bool autoMoveEnabled = false;
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float moveSpeed = 8f;
+    public float jumpForce = 18f;
     public LayerMask groundLayer;
     public Transform groundCheck;
     public LayerMask wallLayer;
@@ -32,11 +32,11 @@ public class PlayerControls : MonoBehaviour
     public float groundCheckRadius = 0.2f;
 
     [Header("Jump Feel")]
-    public float jumpCutMultiplier = 0.5f; //hur mycket det bromsar vid tidig release
+    public float jumpCutMultiplier = 0.3f; //hur mycket det bromsar vid tidig release
     [SerializeField] private float jumpCooldown = 0.1f;
 
     [Header("Apex modifiers")]
-    public float apexThreshold = 2f;            //inom vilken Y-hastighet är vi vid apex?
+    public float apexThreshold = 0.5f;            //inom vilken Y-hastighet är vi vid apex?
     public float apexGravityMultiplier = 0.5f;  //Hur mycket lägre gravitation vid apex
     public float normalGravityScale = 3f;       // Normal gravitation
     public float fallGravityScale = 5f;         //Extra tyngd vid fall
@@ -52,14 +52,14 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Ledge Detection")]
     public float ledgeCheckDistance = 0.3f;
-    public float ledgeHeightOffset = 18f;      //hur högt vi boostar karaktären
+    public float ledgeHeightOffset = 11.5f;      //hur högt vi boostar karaktären
     public float ledgeCheckXOffset = 0.5f;      //avstånd från mitten till framkanten
     public float ledgeCheckLowY = 0f;           //höjd för låg cirkel relativt spelarens mittpunkt
     public float ledgeCheckHighY = 0.6f;        //höjd för hög cirkel relativt spelarens mittpunkt
     [SerializeField] private float ledgeBoostCooldownTime = 0.15f;
 
     [Header("Wall Detection")]
-    public Vector2 boxSize = new Vector2(0.5f, 1f);
+    public Vector2 boxSize = new Vector2(0.6f, 1f);
     public float wallCheckDistance = 0.5f;
 
     [Header("Wall Jump")]
