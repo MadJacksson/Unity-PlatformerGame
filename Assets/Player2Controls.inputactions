@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "Player2Controls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "6f9d211f-de0a-4ece-aec4-fa22c203b142",
+            "actions": [
+                {
+                    "name": "PrimaryInteract",
+                    "type": "Button",
+                    "id": "72131236-6a5b-4bb8-bfdb-1684ad411068",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondaryInteract",
+                    "type": "Button",
+                    "id": "40dbee26-2847-4697-beaa-4227f90e18a9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "69da533e-ac05-48f8-89ce-d0f30dcc1c63",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7cf77fba-fb1d-428b-96fc-1f3a47a828fc",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
