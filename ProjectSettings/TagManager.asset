@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Spike
   - HealingOrb
+  - Water
+  - Lava
+  - Earth
+  - Wind
+  - Lightning
   layers:
   - Default
   - TransparentFX
