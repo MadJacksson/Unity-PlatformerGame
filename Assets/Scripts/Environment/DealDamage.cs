@@ -15,6 +15,7 @@ public class DealDamage : MonoBehaviour
             if (healthSystemComponent != null)
             {
                 healthSystemComponent.GetHealthSystem().Damage(damageAmount);
+                Debug.Log($"Player1 took {damageAmount} damage.");
                 Destroy(gameObject);
             }
 

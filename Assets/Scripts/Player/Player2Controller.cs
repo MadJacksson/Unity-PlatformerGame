@@ -11,6 +11,8 @@ public class Player2Controller : MonoBehaviour
     private ElementType rightElement = ElementType.None;
     private IElement leftElementInstance;
     private IElement rightElementInstance;
+    private GameObject leftElementPrefab;
+    private GameObject rightElementPrefab;
 
     [SerializeField] private Transform cursorIndicator;
 
@@ -21,7 +23,6 @@ public class Player2Controller : MonoBehaviour
     [SerializeField] private GameObject windPrefab;
     [SerializeField] private GameObject lightningPrefab;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InputActionAsset inputActions = GetComponent<PlayerInput>().actions;
@@ -29,7 +30,6 @@ public class Player2Controller : MonoBehaviour
         rightMouseClick = inputActions.FindAction("SecondaryInteract");
     }
 
-    // Update is called once per frame
     void Update()
     {
         Vector2 worldPosition = CheckMousePosition();
@@ -56,10 +56,24 @@ public class Player2Controller : MonoBehaviour
     private void Interact(Vector2 position, bool isPrimary)
     {
         ElementType detectedElement = ElementType.None;
+        GameObject selectedPrefab = null;
 
         RaycastHit2D hit = Physics2D.Raycast(position, Vector2.zero);
 
-        if (hit.collider == null) return;
+        if (hit.collider == null)
+        {
+            IElement equippedInstance = isPrimary ? leftElementInstance : rightElementInstance;
+            GameObject equippedPrefab = isPrimary ? leftElementPrefab : rightElementPrefab;
+            if (equippedInstance == null || equippedPrefab == null)
+            {
+                Debug.Log("Nothing equipped.");
+                return;
+            }
+
+            GameObject spawnedObject = Instantiate(equippedPrefab, position, Quaternion.identity);
+            spawnedObject.GetComponent<IElement>().OnHoldStart(position);
+            return;
+        }
 
         switch (hit.collider.gameObject.tag)
         {
@@ -70,10 +84,29 @@ public class Player2Controller : MonoBehaviour
             case "Lightning": detectedElement = ElementType.Lightning; break;
         }
 
+        switch (detectedElement)
+        {
+            case ElementType.Water: selectedPrefab = waterPrefab; break;
+            case ElementType.Lava: selectedPrefab = lavaPrefab; break;
+            case ElementType.Earth: selectedPrefab = earthPrefab; break;
+            case ElementType.Wind: selectedPrefab = windPrefab; break;
+            case ElementType.Lightning: selectedPrefab = lightningPrefab; break;
+        }
+
         if (detectedElement != ElementType.None)
         {
-            if (isPrimary) leftElement = detectedElement;
-            else rightElement = detectedElement;
+            if (isPrimary)
+            {
+                leftElement = detectedElement;
+                leftElementPrefab = selectedPrefab;
+                leftElementInstance = selectedPrefab.GetComponent<IElement>();
+            }
+            else
+            {
+                rightElement = detectedElement;
+                rightElementPrefab = selectedPrefab;
+                rightElementInstance = selectedPrefab.GetComponent<IElement>();
+            }
             Debug.Log($"{detectedElement} equipped in {(isPrimary ? "Primary" : "Secondary")}.");
         }
     }
