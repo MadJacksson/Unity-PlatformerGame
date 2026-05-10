@@ -44,6 +44,29 @@ public class Player2Controller : MonoBehaviour
             Debug.Log($"Secondary interact trigered at {worldPosition}.");
             Interact(worldPosition, false);
         }
+        if (leftMouseClick.WasPressedThisFrame() != true)
+        {
+            
+        }
+        if (!leftMouseClick.WasPressedThisFrame() && leftMouseClick.IsPressed() && leftElementInstance != null)
+        {
+            leftElementInstance.OnHoldUpdate(worldPosition);
+        } 
+        if (!rightMouseClick.WasPressedThisFrame() && rightMouseClick.IsPressed() && rightElementInstance != null)
+        {
+            rightElementInstance.OnHoldUpdate(worldPosition);
+        }
+
+        if (leftMouseClick.WasReleasedThisFrame() && leftElementInstance != null)
+        {
+            Debug.Log("Primary interact was released this frame.");
+            leftElementInstance.OnHoldEnd(worldPosition);
+        }
+        if (rightMouseClick.WasReleasedThisFrame() && rightElementInstance != null)
+        {
+            Debug.Log("Secondary interact was released this frame.");
+            rightElementInstance.OnHoldEnd(worldPosition);
+        }
     }
 
     public Vector2 CheckMousePosition()
@@ -64,6 +87,7 @@ public class Player2Controller : MonoBehaviour
         {
             IElement equippedInstance = isPrimary ? leftElementInstance : rightElementInstance;
             GameObject equippedPrefab = isPrimary ? leftElementPrefab : rightElementPrefab;
+            Debug.Log($"Prefab assigned: {leftElementPrefab != null}, Instance assigned: {leftElementInstance != null}");
             if (equippedInstance == null || equippedPrefab == null)
             {
                 Debug.Log("Nothing equipped.");
