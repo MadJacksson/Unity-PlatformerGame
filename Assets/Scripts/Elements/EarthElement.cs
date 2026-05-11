@@ -82,7 +82,7 @@ public class EarthElement : MonoBehaviour, IElement
     }
     private IEnumerator BoulderSequence(Rigidbody2D rb)
     {
-        lineRenderer.enabled = false;
+        Debug.Log("BoulderSequence started.");
         yield return new WaitForSeconds(floatTimer);
         rb.gravityScale = 1;
         yield return new WaitForSeconds(destroyTimer);
