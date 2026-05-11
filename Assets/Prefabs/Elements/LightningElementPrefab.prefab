@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5655037415331611034}
   - component: {fileID: 6948418363745790863}
   m_Layer: 0
-  m_Name: LightningElement
+  m_Name: LightningElementPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

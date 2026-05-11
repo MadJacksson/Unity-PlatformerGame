@@ -44,10 +44,7 @@ public class Player2Controller : MonoBehaviour
             Debug.Log($"Secondary interact trigered at {worldPosition}.");
             Interact(worldPosition, false);
         }
-        if (leftMouseClick.WasPressedThisFrame() != true)
-        {
-            
-        }
+
         if (!leftMouseClick.WasPressedThisFrame() && leftMouseClick.IsPressed() && leftElementInstance != null)
         {
             leftElementInstance.OnHoldUpdate(worldPosition);
@@ -95,7 +92,10 @@ public class Player2Controller : MonoBehaviour
             }
 
             GameObject spawnedObject = Instantiate(equippedPrefab, position, Quaternion.identity);
-            spawnedObject.GetComponent<IElement>().OnHoldStart(position);
+            IElement spawnedInstance = spawnedObject.GetComponent<IElement>();
+            if (isPrimary) leftElementInstance = spawnedInstance;
+            else rightElementInstance = spawnedInstance;
+            spawnedInstance.OnHoldStart(position);
             return;
         }
 
@@ -123,13 +123,11 @@ public class Player2Controller : MonoBehaviour
             {
                 leftElement = detectedElement;
                 leftElementPrefab = selectedPrefab;
-                leftElementInstance = selectedPrefab.GetComponent<IElement>();
             }
             else
             {
                 rightElement = detectedElement;
                 rightElementPrefab = selectedPrefab;
-                rightElementInstance = selectedPrefab.GetComponent<IElement>();
             }
             Debug.Log($"{detectedElement} equipped in {(isPrimary ? "Primary" : "Secondary")}.");
         }
