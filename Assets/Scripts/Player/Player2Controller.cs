@@ -79,19 +79,19 @@ public class Player2Controller : MonoBehaviour
         GameObject selectedPrefab = null;
 
         RaycastHit2D hit = Physics2D.Raycast(position, Vector2.zero);
+        Debug.Log($"Hit: {(hit.collider != null ? hit.collider.gameObject.name : "nothing")}");
+        Debug.Log($"isPrimary: {isPrimary}, leftPrefab: {leftElementPrefab != null}, rightPrefab: {rightElementPrefab != null}");
 
         if (hit.collider == null)
         {
-            IElement equippedInstance = isPrimary ? leftElementInstance : rightElementInstance;
             GameObject equippedPrefab = isPrimary ? leftElementPrefab : rightElementPrefab;
-            Debug.Log($"Prefab assigned: {leftElementPrefab != null}, Instance assigned: {leftElementInstance != null}");
-            if (equippedInstance == null || equippedPrefab == null)
+            if (equippedPrefab == null)
             {
                 Debug.Log("Nothing equipped.");
                 return;
             }
 
-            GameObject spawnedObject = Instantiate(equippedPrefab, position, Quaternion.identity);
+            GameObject spawnedObject = Instantiate(equippedPrefab, Vector2.zero, Quaternion.identity);
             IElement spawnedInstance = spawnedObject.GetComponent<IElement>();
             if (isPrimary) leftElementInstance = spawnedInstance;
             else rightElementInstance = spawnedInstance;

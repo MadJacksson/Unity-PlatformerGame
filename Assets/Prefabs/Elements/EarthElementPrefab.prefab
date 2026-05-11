@@ -50,7 +50,7 @@ MonoBehaviour:
   floatTimer: 1
   destroyTimer: 15
   minimumPointCount: 3
-  minimumDistanceBetweenPoints: 1
+  minimumDistanceBetweenPoints: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
