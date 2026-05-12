@@ -15,7 +15,7 @@ public class LightningElement : MonoBehaviour, IElement
     [SerializeField] private float lightningBoltOffsetX = 1f;
 
 
-    [Header("Ability stats")]
+    [Header("Element stats")]
     [SerializeField] private float damageAmount = 10f;
     [SerializeField] private float areaOfEffect;
 
