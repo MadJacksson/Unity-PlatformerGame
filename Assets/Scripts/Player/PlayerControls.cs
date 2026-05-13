@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
@@ -14,7 +15,10 @@ public class PlayerControls : MonoBehaviour
     private bool isLedgeBoosting = false;
     private InputAction moveAction;
     private float moveInput = 0f;
+    private float verticalInput = 0f;
     private float wallJumpCooldownCounter = 0f;
+    private bool isSwimming = false;
+    private WaterZone currentWaterZone;
 
     [Header("Debug Raycasts")]
     [SerializeField] private bool showLedgeDebug = false;
@@ -66,6 +70,10 @@ public class PlayerControls : MonoBehaviour
     public float wallJumpHorizontalForce = 8f;
     public float wallJumpCooldownTime = 0.8f;
 
+    [Header("Swimming")]
+    public float waterGravityScale = 0.5f;
+    public float swimSpeed = 5f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -116,12 +124,26 @@ public class PlayerControls : MonoBehaviour
     public void MoveAction(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>().x;
-        
+
+        if (isSwimming)
+        {
+            verticalInput = context.ReadValue<Vector2>().y;
+        }
+
     }
 
     private void HandleMovement()
     {
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        if (isSwimming)
+        {
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed, verticalInput * swimSpeed);
+            if (currentWaterZone != null) 
+                rb.AddForce(currentWaterZone.currentDirection * currentWaterZone.currentStrength);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        }
 
         if (moveInput > 0 && !facingRight) Flip();
         if (moveInput < 0 && facingRight) Flip();
@@ -180,6 +202,8 @@ public class PlayerControls : MonoBehaviour
 
     private void HandleGravity()
     {
+        if (isSwimming) return;
+
         bool atApex = Mathf.Abs(rb.linearVelocity.y) < apexThreshold;
         bool falling = rb.linearVelocity.y < 0;
 
@@ -399,6 +423,24 @@ public class PlayerControls : MonoBehaviour
         Debug.DrawLine(topRight, bottomRight, color);
         Debug.DrawLine(bottomRight, bottomLeft, color);
         Debug.DrawLine(bottomLeft, topLeft, color);
+    }
+
+    public void EnterWater(WaterZone zone)
+    {
+        currentWaterZone = zone;
+        isSwimming = true;
+        verticalInput = 0f;
+        rb.gravityScale = waterGravityScale;
+        Debug.Log($"Player entered water. Gravity set to {waterGravityScale}. isSwimming = {isSwimming}");
+    }
+
+    public void ExitWater()
+    {
+        currentWaterZone = null;
+        isSwimming = false;
+        verticalInput = 0f;
+        rb.gravityScale = normalGravityScale;
+        Debug.Log($"Player exited water. Gravity set to {normalGravityScale}. isSwimming = {isSwimming}");
     }
 }
 
