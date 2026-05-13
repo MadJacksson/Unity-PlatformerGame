@@ -21,7 +21,6 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool showWallDebug = false;
 
     [Header("Movement")]
-    public bool autoMoveEnabled = false;
     public float moveSpeed = 8f;
     public float jumpForce = 18f;
     public LayerMask groundLayer;
@@ -79,10 +78,10 @@ public class PlayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        AutoMove();
+        HandleMovement();
         HandleJump();
         bool ledgeBoosted = HandleLedgeDetection();
-        if (!ledgeBoosted && ledgeBoostCooldown <=0 && autoMoveEnabled)
+        if (!ledgeBoosted && ledgeBoostCooldown <=0)
         {
             WallCheckAndFlip();
         }
@@ -119,22 +118,15 @@ public class PlayerControls : MonoBehaviour
         moveInput = context.ReadValue<Vector2>().x;
         
     }
-    private void AutoMove()
+
+    private void HandleMovement()
     {
-        if (autoMoveEnabled)
-        {
-            float direction = facingRight ? 1f : -1f;
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-            rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
-        } else
-        {
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-            if (moveInput > 0 && !facingRight) Flip();
-            if (moveInput < 0 && facingRight) Flip();
-        }
-        
+        if (moveInput > 0 && !facingRight) Flip();
+        if (moveInput < 0 && facingRight) Flip();
     }
+   
 
     #region Jump Mechanics
     public void JumpAction(InputAction.CallbackContext context)
