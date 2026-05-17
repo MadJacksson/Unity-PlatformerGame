@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -7,6 +8,12 @@ public class WaterZone : MonoBehaviour
     private BoxCollider2D col;
     private float evaporationTimer;
     private bool evaporating = false;
+    private SpriteRenderer waterSprite;
+
+    public bool isPermanent = false;
+
+    [Header("References")]
+    public GameObject waterVisuals;
 
     [Header("Current")]
     public Vector2 currentDirection = Vector2.zero;
@@ -40,11 +47,13 @@ public class WaterZone : MonoBehaviour
     {
         col = GetComponent<BoxCollider2D>();
         col.isTrigger = true;
+        waterSprite = waterVisuals.GetComponent<SpriteRenderer>();
         evaporationTimer = evaporationDelay;
     }
 
     private void Update()
     {
+        if (isPermanent) return; //Added to avoid permanent bodies of water evaporating
         evaporationTimer -= Time.deltaTime;
 
         if (evaporationTimer <= 0f) evaporating = true;
@@ -58,7 +67,7 @@ public class WaterZone : MonoBehaviour
 
         float shrink = evaporationSpeed * Time.deltaTime;
         size.y -= shrink;
-        offset.y += shrink / 2f; //shrink from bottom up
+        offset.y -= shrink / 2f; //shrink downwards
 
         if (size.y <= 0f)
         {
@@ -73,7 +82,9 @@ public class WaterZone : MonoBehaviour
 
     private void SyncVisual()
     {
-        //Placeholder - later we'll drive a SpriteRenderer or mesh here
-        //For now we'll attach a child sprite and scale it manually
+        if (waterVisuals == null) return;
+
+        waterSprite.size = col.size;
+        waterVisuals.transform.localPosition = col.offset;
     }
 }
