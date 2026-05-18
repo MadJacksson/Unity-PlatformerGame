@@ -183,6 +183,13 @@ public class PlayerControls : MonoBehaviour
             jumpBufferCounter = 0f;         //Resetta bufferten
             wallJumpCooldownCounter = wallJumpCooldownTime;
             Debug.Log("Walljump triggered");
+        } else if (isSwimming && jumpBufferCounter > 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            jumpBufferCounter = 0f;         //Resetta bufferten
+            coyoteTimeCounter = 0f;         //Resetta coyoteTimeCountern
+            jumpCooldownCounter = jumpCooldown; //Starta cooldown för hopp
+            Debug.Log("WaterJump triggered.");
         }
     }
 
