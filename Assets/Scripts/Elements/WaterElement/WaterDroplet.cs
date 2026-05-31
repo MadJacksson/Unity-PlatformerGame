@@ -5,9 +5,9 @@ public class WaterDroplet : MonoBehaviour
 {
     private Rigidbody2D rb;
     private bool hasSettled = false;
-    private WaterZone waterZone;
+    private Collider2D[] nearby;
 
-
+    [SerializeField] private GameObject waterZonePrefab;
     [SerializeField] private float settleThreshold = 0.2f;
     [SerializeField] private float mergeDropletsRadius = 0.5f;
     [SerializeField] private float dropletTimer = 10f;
@@ -43,7 +43,7 @@ public class WaterDroplet : MonoBehaviour
         if (rb.linearVelocity.magnitude < settleThreshold)
         {
             hasSettled = true;
-            Collider2D[] nearby = Physics2D.OverlapCircleAll(rb.position, mergeDropletsRadius);
+            nearby = Physics2D.OverlapCircleAll(rb.position, mergeDropletsRadius);
             int dropletCount = nearby.Count(c => c.CompareTag("Droplet"));
             if (dropletCount >= mergeThreshold) SpawnWaterZone();
         }
@@ -51,13 +51,17 @@ public class WaterDroplet : MonoBehaviour
 
     private void MergeIntoZone(WaterZone zone)
     {
-        waterZone.AddWater(addWaterAmount);
+        zone.AddWater(addWaterAmount);
         Destroy(gameObject);
     }
 
     private void SpawnWaterZone()
     {
-        
+        GameObject waterZoneInstance = Instantiate(waterZonePrefab, transform.position, Quaternion.identity);
+        foreach (Collider2D c in nearby)
+        {
+            if (c.CompareTag("Droplet")) Destroy(c.gameObject);
+        }
     }
 
     private void DestroyDroplet()

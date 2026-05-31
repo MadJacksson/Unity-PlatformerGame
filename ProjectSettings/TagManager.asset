@@ -11,6 +11,7 @@ TagManager:
   - Earth
   - Wind
   - Lightning
+  - Droplet
   layers:
   - Default
   - TransparentFX

@@ -1,16 +1,43 @@
 using UnityEngine;
 
-public class WaterElement : MonoBehaviour
+public class WaterElement : MonoBehaviour, IElement
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject dropletPrefab;
+    [SerializeField] private float spawnCooldown = 0f;
+    [SerializeField] private float spawnRate = 0.5f;
+
+
+    public void OnHoldStart(Vector2 position)
     {
-        
+        if (spawnCooldown <= 0)
+        {
+            SpawnDroplet(position);
+            spawnCooldown = spawnRate;
+        }
     }
 
-    // Update is called once per frame
+    public void OnHoldUpdate(Vector2 position)
+    {
+        if (spawnCooldown <= 0)
+        {
+            SpawnDroplet(position);
+            spawnCooldown = spawnRate;
+        }
+    }
+
+    public void OnHoldEnd(Vector2 position)
+    {
+
+    }
+
+    private void SpawnDroplet(Vector2 position)
+    {
+        GameObject dropletInstance = Instantiate(dropletPrefab, position, Quaternion.identity);
+    }
+
     void Update()
     {
-        
+        if (spawnCooldown > 0) spawnCooldown -= Time.deltaTime;
     }
+
 }
